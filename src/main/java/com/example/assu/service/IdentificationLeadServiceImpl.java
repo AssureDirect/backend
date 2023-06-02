@@ -45,8 +45,8 @@ public class IdentificationLeadServiceImpl implements IdentificationLeadService{
             editedIdentificationLead.setTypeContact(identificationLead.getTypeContact());
             editedIdentificationLead.setEligibiliteBlocTel(identificationLead.getEligibiliteBlocTel());
 
-            cartographieDesRisquesRepo.save(editedCartographie);
-            MessageResponse messageResponse = new MessageResponse("Cartographie Des Risques modifier avec succes");
+            identificationLeadRepository.save(editedIdentificationLead);
+            MessageResponse messageResponse = new MessageResponse("Identification du lead modifier avec succes");
             return ResponseEntity.ok(messageResponse);
         } else {
             return ResponseEntity.notFound().build();
@@ -54,6 +54,14 @@ public class IdentificationLeadServiceImpl implements IdentificationLeadService{
 
     @Override
     public ResponseEntity<MessageResponse> deleteIdentificationLead(Integer id) {
-        return null;
-    }
+         Optional<IdentificationLead> optionalIdentificationLead = identificationLeadRepository.findById(id);
+        if (optionalIdentificationLead.isPresent()) {
+            identificationLeadRepository.deleteById(id);
+            MessageResponse messageResponse = new MessageResponse("Identification du lead  supprimer avec succes");
+            return ResponseEntity.ok(messageResponse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    };
+
 }
